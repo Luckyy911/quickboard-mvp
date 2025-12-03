@@ -12,15 +12,12 @@ const app = express();
 const PORT = 3001;
 const DB_FILE = path.join(__dirname, 'db.json');
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Helper function to read database
 async function readDB() {
   try {
     if (!existsSync(DB_FILE)) {
-      // Initialize with empty posts array
       await writeDB({ posts: [] });
       return { posts: [] };
     }
@@ -32,7 +29,6 @@ async function readDB() {
   }
 }
 
-// Helper function to write to database
 async function writeDB(data) {
   try {
     await fs.writeFile(DB_FILE, JSON.stringify(data, null, 2));
@@ -42,20 +38,16 @@ async function writeDB(data) {
   }
 }
 
-// GET /api/posts - Get all posts with optional filtering
 app.get('/api/posts', async (req, res) => {
   try {
     const db = await readDB();
     let posts = db.posts;
-
-    // Filter by tag if provided
     const { tag, search } = req.query;
 
     if (tag) {
       posts = posts.filter(post => post.tag === tag);
     }
 
-    // Search in title and description
     if (search) {
       const searchLower = search.toLowerCase();
       posts = posts.filter(post =>
@@ -70,7 +62,7 @@ app.get('/api/posts', async (req, res) => {
   }
 });
 
-// POST /api/posts - Create a new post
+// TODO: add pagination later
 app.post('/api/posts', async (req, res) => {
   try {
     const { title, description, media, tag } = req.body;

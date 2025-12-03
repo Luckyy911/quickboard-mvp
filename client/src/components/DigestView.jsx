@@ -3,10 +3,6 @@ import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:3001/api';
 
-/**
- * DigestView - Daily Digest component
- * Shows 3 most recent posts per category
- */
 export default function DigestView() {
   const [digestData, setDigestData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -14,7 +10,6 @@ export default function DigestView() {
 
   const categories = ['Product', 'Research', 'Marketing', 'Team'];
 
-  // Fetch and organize posts by category
   useEffect(() => {
     const fetchDigest = async () => {
       try {
@@ -22,7 +17,6 @@ export default function DigestView() {
         const response = await axios.get(`${API_BASE_URL}/posts`);
         const allPosts = response.data;
 
-        // Group posts by category and take top 3 from each
         const digest = {};
         categories.forEach((category) => {
           const categoryPosts = allPosts

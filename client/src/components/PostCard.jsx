@@ -1,10 +1,4 @@
-/**
- * PostCard - Component for displaying individual posts
- * Shows post details, handles star/pin/delete actions
- * Auto-previews images and auto-links URLs
- */
 export default function PostCard({ post, onUpdate, onDelete }) {
-  // Format the time ago
   const getTimeAgo = (dateString) => {
     const now = new Date();
     const postDate = new Date(dateString);
@@ -16,13 +10,11 @@ export default function PostCard({ post, onUpdate, onDelete }) {
     return `${Math.floor(diffInSeconds / 86400)}d ago`;
   };
 
-  // Check if URL is an image
   const isImageUrl = (url) => {
     if (!url) return false;
     return /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(url);
   };
 
-  // Convert URLs in text to clickable links
   const linkifyText = (text) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const parts = text.split(urlRegex);
@@ -45,7 +37,6 @@ export default function PostCard({ post, onUpdate, onDelete }) {
     });
   };
 
-  // Get tag color
   const getTagColor = (tag) => {
     const colors = {
       Product: 'bg-blue-100 text-blue-800',

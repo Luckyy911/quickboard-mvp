@@ -1,9 +1,5 @@
 import { useState } from 'react';
 
-/**
- * CreatePostForm - Component for creating new posts
- * Handles form submission and communicates with parent via onPostCreated callback
- */
 export default function CreatePostForm({ onPostCreated }) {
   const [formData, setFormData] = useState({
     title: '',
@@ -14,7 +10,6 @@ export default function CreatePostForm({ onPostCreated }) {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -23,15 +18,12 @@ export default function CreatePostForm({ onPostCreated }) {
     }));
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
       await onPostCreated(formData);
-
-      // Reset form
       setFormData({
         title: '',
         description: '',
@@ -50,7 +42,6 @@ export default function CreatePostForm({ onPostCreated }) {
     <div className="bg-white rounded-lg shadow-md p-6 mb-6">
       <h2 className="text-xl font-semibold mb-4">Create New Post</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Title Input */}
         <div>
           <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
             Title *
@@ -67,7 +58,6 @@ export default function CreatePostForm({ onPostCreated }) {
           />
         </div>
 
-        {/* Description Input */}
         <div>
           <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
             Description *
@@ -84,7 +74,6 @@ export default function CreatePostForm({ onPostCreated }) {
           />
         </div>
 
-        {/* Media URL Input */}
         <div>
           <label htmlFor="media" className="block text-sm font-medium text-gray-700 mb-1">
             Media URL (optional)
@@ -100,7 +89,6 @@ export default function CreatePostForm({ onPostCreated }) {
           />
         </div>
 
-        {/* Tag Selector */}
         <div>
           <label htmlFor="tag" className="block text-sm font-medium text-gray-700 mb-1">
             Category *
@@ -120,7 +108,6 @@ export default function CreatePostForm({ onPostCreated }) {
           </select>
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
           disabled={isSubmitting}

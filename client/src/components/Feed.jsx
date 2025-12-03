@@ -6,10 +6,6 @@ import PostCard from './PostCard';
 
 const API_BASE_URL = 'http://localhost:3001/api';
 
-/**
- * Feed - Main feed component
- * Manages posts state and handles CRUD operations via API
- */
 export default function Feed() {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
@@ -18,7 +14,6 @@ export default function Feed() {
   const [activeFilter, setActiveFilter] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Fetch posts from API
   const fetchPosts = async () => {
     try {
       setLoading(true);
@@ -38,24 +33,19 @@ export default function Feed() {
     }
   };
 
-  // Sort posts: pinned first, then by date
   const sortPosts = (postsArray) => {
     return [...postsArray].sort((a, b) => {
-      // Pinned posts first
       if (a.pinned && !b.pinned) return -1;
       if (!a.pinned && b.pinned) return 1;
-
-      // Then by date (newest first)
       return new Date(b.createdAt) - new Date(a.createdAt);
     });
   };
 
-  // Initial load
   useEffect(() => {
     fetchPosts();
   }, []);
 
-  // Refetch when filters change
+  // TODO: maybe debounce this?
   useEffect(() => {
     fetchPosts();
   }, [activeFilter, searchTerm]);

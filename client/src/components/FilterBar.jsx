@@ -1,22 +1,16 @@
 import { useState } from 'react';
 
-/**
- * FilterBar - Component for filtering and searching posts
- * Provides tag filters and search functionality
- */
 export default function FilterBar({ onFilterChange, onSearchChange }) {
   const [activeTag, setActiveTag] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
 
   const tags = ['All', 'Product', 'Research', 'Marketing', 'Team'];
 
-  // Handle tag click
   const handleTagClick = (tag) => {
     setActiveTag(tag);
     onFilterChange(tag === 'All' ? '' : tag);
   };
 
-  // Handle search input
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
