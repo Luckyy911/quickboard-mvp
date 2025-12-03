@@ -47,7 +47,6 @@ export default function PostCard({ post, onUpdate, onDelete }) {
     return colors[tag] || 'bg-gray-100 text-gray-800';
   };
 
-  // Handle toggle actions
   const handleToggleStar = () => {
     onUpdate(post.id, { ...post, starred: !post.starred });
   };

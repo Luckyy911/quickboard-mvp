@@ -67,16 +67,14 @@ app.post('/api/posts', async (req, res) => {
   try {
     const { title, description, media, tag } = req.body;
 
-    // Validate required fields
     if (!title || !description || !tag) {
       return res.status(400).json({ error: 'Title, description, and tag are required' });
     }
 
     const db = await readDB();
 
-    // Create new post object
     const newPost = {
-      id: Date.now().toString(), // Simple ID generation
+      id: Date.now().toString(),
       title,
       description,
       media: media || '',
@@ -86,7 +84,7 @@ app.post('/api/posts', async (req, res) => {
       createdAt: new Date().toISOString()
     };
 
-    db.posts.unshift(newPost); // Add to beginning of array
+    db.posts.unshift(newPost);
     await writeDB(db);
 
     res.status(201).json(newPost);
@@ -95,7 +93,6 @@ app.post('/api/posts', async (req, res) => {
   }
 });
 
-// PATCH /api/posts/:id - Update a post (pin/star)
 app.patch('/api/posts/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -108,12 +105,11 @@ app.patch('/api/posts/:id', async (req, res) => {
       return res.status(404).json({ error: 'Post not found' });
     }
 
-    // Update the post
     db.posts[postIndex] = {
       ...db.posts[postIndex],
       ...updates,
-      id, // Ensure ID doesn't change
-      createdAt: db.posts[postIndex].createdAt // Preserve creation date
+      id,
+      createdAt: db.posts[postIndex].createdAt
     };
 
     await writeDB(db);
@@ -123,7 +119,6 @@ app.patch('/api/posts/:id', async (req, res) => {
   }
 });
 
-// DELETE /api/posts/:id - Delete a post
 app.delete('/api/posts/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -138,13 +133,12 @@ app.delete('/api/posts/:id', async (req, res) => {
     db.posts.splice(postIndex, 1);
     await writeDB(db);
 
-    res.json({ message: 'Post deleted successfully' });
+    res.json({ message: 'Post deleted' });
   } catch (error) {
     res.status(500).json({ error: 'Failed to delete post' });
   }
 });
 
-// Start server
 app.listen(PORT, () => {
-  console.log(`QuickBoard server running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });

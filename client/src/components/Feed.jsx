@@ -26,7 +26,7 @@ export default function Feed() {
       setFilteredPosts(sortPosts(response.data));
       setError(null);
     } catch (err) {
-      console.error('Error fetching posts:', err);
+      console.log('fetch error:', err);
       setError('Failed to load posts. Make sure the server is running.');
     } finally {
       setLoading(false);
@@ -45,70 +45,54 @@ export default function Feed() {
     fetchPosts();
   }, []);
 
-  // TODO: maybe debounce this?
+  // TODO: debounce this later
   useEffect(() => {
     fetchPosts();
   }, [activeFilter, searchTerm]);
 
-  // Create new post
   const handlePostCreated = async (postData) => {
     try {
       await axios.post(`${API_BASE_URL}/posts`, postData);
-      await fetchPosts(); // Refresh the feed
+      fetchPosts();
     } catch (err) {
       console.error('Error creating post:', err);
       throw err;
     }
   };
 
-  // Update post (pin/star)
   const handlePostUpdate = async (postId, updatedPost) => {
     try {
       await axios.patch(`${API_BASE_URL}/posts/${postId}`, updatedPost);
-      await fetchPosts(); // Refresh the feed
+      fetchPosts();
     } catch (err) {
       console.error('Error updating post:', err);
       alert('Failed to update post');
     }
   };
 
-  // Delete post
   const handlePostDelete = async (postId) => {
     try {
       await axios.delete(`${API_BASE_URL}/posts/${postId}`);
-      await fetchPosts(); // Refresh the feed
+      fetchPosts();
     } catch (err) {
       console.error('Error deleting post:', err);
       alert('Failed to delete post');
     }
   };
 
-  // Handle filter change
-  const handleFilterChange = (tag) => {
-    setActiveFilter(tag);
-  };
-
-  // Handle search change
-  const handleSearchChange = (term) => {
-    setSearchTerm(term);
-  };
-
   return (
     <div className="max-w-4xl mx-auto">
-      {/* Create Post Form */}
       <CreatePostForm onPostCreated={handlePostCreated} />
 
-      {/* Filter Bar */}
       <FilterBar
-        onFilterChange={handleFilterChange}
-        onSearchChange={handleSearchChange}
+        onFilterChange={(tag) => setActiveFilter(tag)}
+        onSearchChange={(term) => setSearchTerm(term)}
       />
 
-      {/* Posts Feed */}
       {loading ? (
         <div className="text-center py-12">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-          <p className="mt-4 text-gray-600">Loading posts...</p>
+          <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       ) : error ? (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
