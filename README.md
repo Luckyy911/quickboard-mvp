@@ -1,20 +1,6 @@
 # QuickBoard
 
-Internal dashboard for team updates. Like Padlet but simpler.
-
-## What it does
-
-- Post updates with title, description, optional media
-- Categories: Product, Research, Marketing, Team
-- Pin stuff to the top, star things
-- Filter and search
-- Daily digest view (top 3 per category)
-
-## Tech
-
-- React + Vite + Tailwind
-- Express backend
-- JSON file for storage (yeah just a file, it's an MVP)
+Internal dashboard for team updates - like Padlet but simpler.
 
 ## Setup
 
@@ -28,58 +14,32 @@ npm run dev
 
 Frontend: `localhost:3000` | Backend: `localhost:3001`
 
-## API
+## What I Built
 
-```
-GET    /api/posts              # ?tag= or ?search= work too
-POST   /api/posts
-PATCH  /api/posts/:id
-DELETE /api/posts/:id
-```
+Dashboard for posting team updates with:
+- Posts with title, description, optional media URLs
+- Categories: Product, Research, Marketing, Team
+- Pin important posts, star favorites
+- Filter by category and search
+- Daily digest view (top 3 per category)
 
-## Usage
+Built with React + Vite + Tailwind on frontend, Express backend, JSON file for data.
 
-Fill out form → posts show up. Click categories to filter, search bar to find stuff. Pin keeps things at top, star marks favorites. Daily Digest tab shows latest 3 per category.
+## Why
 
-## Customizing
+Needed something simpler than Slack threads but faster than email for team updates. JSON storage keeps it lightweight for MVP - can migrate to real DB later if needed.
 
-Want different categories? Edit CreatePostForm.jsx, DigestView.jsx, and PostCard.jsx (for tag colors).
+## Known Issues
 
-Styling is Tailwind - edit tailwind.config.js if you want.
+- Search isn't debounced (TODO)
+- Loads all posts every time (fine for <100 posts, needs pagination later)
+- No auth
+- JSON file could corrupt on server crash
 
-## Future stuff
+## Stretch Goals
 
-- [ ] Auth
-- [ ] Comments
-- [ ] Actual database
-- [ ] Email notifications maybe
-- [ ] File uploads
-
-## Why this architecture?
-
-Simple client-server with JSON storage. Fast to build, easy to debug, simple to migrate later. Works fine for small teams.
-
-React for UI, Express for API, Axios connects them. Each component does one thing. Pretty standard.
-
-### Performance note
-
-Loads all posts every time right now. Fine for <100 posts. If it grows, add pagination. TODO: debounce search.
-
-## Troubleshooting
-
-**Port in use?**
-Change PORT in server/index.js or vite.config.js
-
-**CORS errors?**
-Make sure backend runs on 3001
-
-**Posts not loading?**
-Check if server is running, look at console
-
-## License
-
-MIT
-
----
-
-Built for internal use
+- Authentication
+- Comments on posts
+- Email notifications
+- File uploads
+- PostgreSQL migration
